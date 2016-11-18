@@ -65,75 +65,75 @@ namespace CloudFlareSolverClient
 	
 	public class CloudFlareSolver
 	{
-		// <summary>
-		// CloudFlare challenge Page
-		// </summary>
+		/// <summary>
+		/// CloudFlare challenge Page
+		/// </summary>
 		private string rawPageContent;
 		
-		// <summary>
-		// An Index that is used to locate important data
-		// </summary>
+		/// <summary>
+		/// An Index that is used to locate important data
+		/// </summary>
 		private int    stopBreakingIndex;
 		
-		// <summary>
-		// The name of the target JavaScript object
-		// </summary>
+		/// <summary>
+		/// The name of the target JavaScript object
+		/// </summary>
 		private string objectName;
 		
-		// <summary>
-		// The name of the member of the target JavaScript object
-		// </summary>
+		/// <summary>
+		/// The name of the member of the target JavaScript object
+		/// </summary>
 		private string objectMemberName;
 		
-		// <summary>
-		// The concatenation of objectName, '.', and objectMemberName
-		// </summary>
+		/// <summary>
+		/// The concatenation of objectName, '.', and objectMemberName
+		/// </summary>
 		private string objectCombinedName;
 		
-		// <summary>
-		// Holds the value of jschl_vc
-		// </summary>
+		/// <summary>
+		/// Holds the value of jschl_vc
+		/// </summary>
 		private string jschl_vc;
 		
-		// <summary>
-		// Holds the value of pass
-		// </summary>
+		/// <summary>
+		/// Holds the value of pass
+		/// </summary>
 		private string pass;
 		
-		// <summary>
-		// Holds the value of jschl_answer
-		// </summary>
+		/// <summary>
+		/// Holds the value of jschl_answer
+		/// </summary>
 		private int    challengeValue;
 		
-		// <summary>
-		// Holds the value of the Last Operation (valid operations are '+=', '-=', '*=', and '/=')
-		// </summary>
+		/// <summary>
+		/// Holds the value of the Last Operation (valid operations are '+=', '-=', '*=', and '/=')
+		/// </summary>
 		private string lastOpeartion;
 		
-		// <summary>
-		// A boolean value indicating if the Last Operation is a valid Operation
-		// </summary>
+		/// <summary>
+		/// A boolean value indicating if the Last Operation is a valid Operation
+		/// </summary>
 		private bool   isLastOperationUnknown = false;
 		
-		// <summary>
-		// The user agent used to perform the request
-		// </summary>
+		/// <summary>
+		/// The user agent used to perform the request
+		/// </summary>
 		private const string userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36";
 		
-		// <summary>
-		// A CookieContainer that holds the Cookies
-		// </summary>
+		/// <summary>
+		/// A CookieContainer that holds the Cookies
+		/// </summary>
 		private CookieContainer cookieContainer;
 		
-		// <summary>
-		// Holds the value of the target URL
-		// </summary>
+		/// <summary>
+		/// Holds the value of the target URL
+		/// </summary>
 		private string targetUrl;
 		
-		// <summary>
-		// Create a CloudFlareSolver object to solve CloudFlare JavaScript Challenge
-		// </summary>
-		// <param name="url"> The target URL that we want to solve its JavaScript Challenge </param>
+		/// <summary>
+		/// Create a CloudFlareSolver object to solve CloudFlare JavaScript Challenge
+		/// </summary>
+		/// <param name="url"> The target URL that we want to solve its JavaScript Challenge </param>
 		public CloudFlareSolver(string url)
 		{
 			targetUrl = url;
@@ -199,13 +199,13 @@ namespace CloudFlareSolverClient
 			Thread.Sleep(5000);
 		}
 		
-		// <summary>
-		// Performs a HTTP request to get CloudFlare JavaScript Challenge Page
-		// </summary>
-		// <param name="url"> The target URL. </param>
-		// <returns>
-		// A string containing the CloudFlare JavaScript Challenge page HTML body
-		// </returns>
+		/// <summary>
+		/// Performs a HTTP request to get CloudFlare JavaScript Challenge Page
+		/// </summary>
+		/// <param name="url"> The target URL. </param>
+		/// <returns>
+		/// A string containing the CloudFlare JavaScript Challenge page HTML body
+		/// </returns>
 		private string GetChallengePage(string url)
 		{
 			var hwr       = (HttpWebRequest) WebRequest.Create(url);
@@ -239,9 +239,9 @@ namespace CloudFlareSolverClient
 			}
 		}
 		
-		// <summary>
-		// Solve CloudFlare JavaScript Challenge
-		// </summary>
+		/// <summary>
+		/// Solve CloudFlare JavaScript Challenge
+		/// </summary>
 		public void Solve()
 		{
 			Uri u = new Uri(targetUrl);
@@ -264,13 +264,13 @@ namespace CloudFlareSolverClient
 			Console.WriteLine("[+] Challenge value is: challengeValue = \"" + challengeValue + "\"");
 		}
 		
-		// <summary>
-		// Parses the Target JavaScript Object to get the inital value
-		// </summary>
-		// <param name="objectExpression"> The target JavaScript object </param>
-		// <returns>
-		// An integer that is representing the inital value of the target member of the JavaScript object
-		// </returns>
+		/// <summary>
+		/// Parses the Target JavaScript Object to get the inital value
+		/// </summary>
+		/// <param name="objectExpression"> The target JavaScript object </param>
+		/// <returns>
+		/// An integer that is representing the inital value of the target member of the JavaScript object
+		/// </returns>
 		private int ParseObject(string objectExpression)
 		{
 			int nameEndIndex = objectExpression.IndexOf("=");
@@ -321,13 +321,13 @@ namespace CloudFlareSolverClient
 			return ParseExpression( objectExpression.Substring(initalValueIndex, initalValueEndIndex - initalValueIndex) );
 		}
 		
-		// <summary>
-		// Gets a JavaScript expression that is modifing the value of the Target Object member
-		// </summary>
-		// <param name="expressionIndex"> An index to the JavaScript expression </param>
-		// <returns>
-		// A string representing the desired JavaScript expression
-		// </returns>
+		/// <summary>
+		/// Gets a JavaScript expression that is modifing the value of the Target Object member
+		/// </summary>
+		/// <param name="expressionIndex"> An index to the JavaScript expression </param>
+		/// <returns>
+		/// A string representing the desired JavaScript expression
+		/// </returns>
 		private string GetExpression(int expressionIndex)
 		{
 			stopBreakingIndex = rawPageContent.IndexOf(";", expressionIndex) + 1;
@@ -335,14 +335,14 @@ namespace CloudFlareSolverClient
 			return rawPageContent.Substring(expressionIndex, stopBreakingIndex - expressionIndex).Trim();
 		}
 		
-		// <summary>
-		// Parses a JavaScript expression that is modifing the value of the Target Object member,
-		// and sets the value of the Last Operation
-		// </summary>
-		// <param name="expression"> A JavaScript expression </param>
-		// <returns>
-		// An integer that is representing the operand value
-		// </returns>
+		/// <summary>
+		/// Parses a JavaScript expression that is modifing the value of the Target Object member,
+		/// and sets the value of the Last Operation
+		/// </summary>
+		/// <param name="expression"> A JavaScript expression </param>
+		/// <returns>
+		/// An integer that is representing the operand value
+		/// </returns>
 		private int ParseExpression(string expression)
 		{
 			string newExpression = expression.Replace(objectCombinedName, "")
@@ -360,13 +360,13 @@ namespace CloudFlareSolverClient
 			return ParseUniqueExpression(newExpression);
 		}
 		
-		// <summary>
-		// Parses a JavaScript expression that is made of Parenthesis
-		// </summary>
-		// <param name="expression"> A JavaScript expression </param>
-		// <returns>
-		// An integer that is representing the value of the Parenthesis expression
-		// </returns>
+		/// <summary>
+		/// Parses a JavaScript expression that is made of Parenthesis
+		/// </summary>
+		/// <param name="expression"> A JavaScript expression </param>
+		/// <returns>
+		/// An integer that is representing the value of the Parenthesis expression
+		/// </returns>
 		private int ParseParenthesisExpression(string expression)
 		{
 			string[] elements = expression.Split( new string[]{")+("}, StringSplitOptions.None);
@@ -395,13 +395,13 @@ namespace CloudFlareSolverClient
 			return int.Parse(resultString);
 		}
 		
-		// <summary>
-		// Parses a JavaScript expression that is NOT made of Parenthesis
-		// </summary>
-		// <param name="expression"> A JavaScript expression </param>
-		// <returns>
-		// An integer that is representing the value of the Unique expression
-		// </returns>
+		/// <summary>
+		/// Parses a JavaScript expression that is NOT made of Parenthesis
+		/// </summary>
+		/// <param name="expression"> A JavaScript expression </param>
+		/// <returns>
+		/// An integer that is representing the value of the Unique expression
+		/// </returns>
 		private int ParseUniqueExpression(string expression)
 		{			
 			int numValue = 0;
@@ -417,10 +417,10 @@ namespace CloudFlareSolverClient
 			return numValue;
 		}
 		
-		// <summary>
-		// Performs the required calculation according to the Last Operation
-		// </summary>
-		// <param name="value"> The operand value </param>
+		/// <summary>
+		/// Performs the required calculation according to the Last Operation
+		/// </summary>
+		/// <param name="value"> The operand value </param>
 		private void PerformOpeartion(int value)
 		{
 			if(lastOpeartion == "-=")
@@ -446,9 +446,9 @@ namespace CloudFlareSolverClient
 			}
 		}
 		
-		// <summary>
-		// Send the request after the challenge solved
-		// </summary>
+		/// <summary>
+		/// Send the request after the challenge solved
+		/// </summary>
 		public void SendChallengeRequest()
 		{
 			Uri u = new Uri(targetUrl);
@@ -469,13 +469,13 @@ namespace CloudFlareSolverClient
 			}
 		}
 		
-		// <summary>
-		// Create a HttpWebRequest that can be used after CloudFlare JavaScript challenge solved
-		// The request URL is the default Target URL
-		// </summary>
-		// <returns>
-		// A HttpWebRequest that can be used to access the target
-		// </returns>
+		/// <summary>
+		/// Create a HttpWebRequest that can be used after CloudFlare JavaScript challenge solved
+		/// The request URL is the default Target URL
+		/// </summary>
+		/// <returns>
+		/// A HttpWebRequest that can be used to access the target
+		/// </returns>
 		public HttpWebRequest CreateWebRequest()
 		{
 			var hwr = (HttpWebRequest) WebRequest.Create(targetUrl);
@@ -484,13 +484,13 @@ namespace CloudFlareSolverClient
 			return hwr;
 		}
 		
-		// <summary>
-		// Create a HttpWebRequest that can be used after CloudFlare JavaScript challenge solved
-		// </summary>
-		// <param name="url"> A URL that has the same Host as the Host where the challenge was solved  </param>
-		// <returns>
-		// A HttpWebRequest that can be used to access the target
-		// </returns>
+		/// <summary>
+		/// Create a HttpWebRequest that can be used after CloudFlare JavaScript challenge solved
+		/// </summary>
+		/// <param name="url"> A URL that has the same Host as the Host where the challenge was solved  </param>
+		/// <returns>
+		/// A HttpWebRequest that can be used to access the target
+		/// </returns>
 		public HttpWebRequest CreateWebRequest(string url)
 		{
 			Uri u1 = new Uri(targetUrl);
